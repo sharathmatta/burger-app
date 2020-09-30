@@ -9,6 +9,7 @@ const withErrorHandler = (WrappedContent, axios) => {
     };
     componentDidMount() {
       this.reqInterceptors = axios.interceptors.request.use((req) => {
+        console.log(req);
         this.setState({ error: null });
         return req;
       });
@@ -28,6 +29,7 @@ const withErrorHandler = (WrappedContent, axios) => {
       this.setState({ error: null });
     };
     render() {
+      console.log(this.state.error);
       return (
         <Auxiliary>
           <Modal show={this.state.error} noOrder={this.errorConfirmedHandler}>

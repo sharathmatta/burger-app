@@ -8,7 +8,7 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import Spinner from "../../components/UI/spinner/Spinner";
 import OrderSummary from "../../components/Burger/OrderSummary/Ordersummary";
 import { connect } from "react-redux";
-import * as actionTypes from "../../Store/actions";
+import * as actionCreators from "../../Store/actions/index";
 
 class BurgerBuilder extends Component {
   state = {
@@ -16,16 +16,8 @@ class BurgerBuilder extends Component {
     loading: false,
     error: false,
   };
-
   componentDidMount() {
-    // axios
-    //   .get("https://my-burger-49093.firebaseio.com/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error: true });
-    //   });
+    this.props.onInitIngredients();
   }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -34,18 +26,6 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   purchaseContinueHandler = () => {
-    // console.log(this.props);
-
-    // const queryParams = [];
-    // for (let i in this.state.ingredients) {
-    //   queryParams.push(
-    //     encodeURIComponent(i) +
-    //       "=" +
-    //       encodeURIComponent(this.state.ingredients[i])
-    //   );
-    // }
-    // queryParams.push("price=" + this.state.totalPrice);
-    // const queryString = queryParams.join("&");
     this.props.history.push("/checkout");
   };
 
@@ -63,8 +43,8 @@ class BurgerBuilder extends Component {
       }
     }
     let orderSummary = null;
-    // let burger = this.state.error ? <p>Burger cant be loaded</p> : <Spinner />;
-    let burger = null;
+    let burger = this.props.error ? <p>Burger cant be loaded</p> : <Spinner />;
+
     if (this.props.ings) {
       burger = (
         <Auxiliary>
@@ -107,6 +87,7 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => {
   return {
     ings: state.ingState.ingredients,
+    error: state.ingState.error,
     pri: state.priceState.price,
   };
 };
@@ -114,23 +95,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddIngredient: (ingName) => {
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName });
-      dispatch({
-        type: actionTypes.INCREASE_PRICE,
-        ingredientName: ingName,
-      });
+      dispatch(actionCreators.addIngredient(ingName));
+      dispatch(actionCreators.increasePrice(ingName));
     },
 
     onRemoveIngredient: (ingName) => {
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingName,
-      });
-      dispatch({
-        type: actionTypes.DECREASE_PRICE,
-        ingredientName: ingName,
-      });
+      dispatch(actionCreators.removeIngredient(ingName));
+      dispatch(actionCreators.decreasePrice(ingName));
     },
+    onInitIngredients: () => dispatch(actionCreators.initIngredients()),
   };
 };
 
