@@ -13,6 +13,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.INIT_PRICE:
+      return {
+        ...state,
+        price: 4,
+      };
     case actionTypes.INCREASE_PRICE:
       return {
         price: state.price + INGREDIENT_PRICES[action.ingredientName],

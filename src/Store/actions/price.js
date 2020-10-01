@@ -12,3 +12,8 @@ export const decreasePrice = (name) => {
     ingredientName: name,
   };
 };
+export const initPrice = () => {
+  return {
+    type: actionTypes.INIT_PRICE,
+  };
+};

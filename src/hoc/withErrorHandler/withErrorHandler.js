@@ -7,11 +7,10 @@ const withErrorHandler = (WrappedContent, axios) => {
     state = {
       error: null,
     };
-    componentDidMount() {
-      this.reqInterceptors = axios.interceptors.request.use((req) => {
-        console.log(req);
-        this.setState({ error: null });
-        return req;
+
+    componentWillMount() {
+      this.reqInterceptors = axios.interceptors.request.use((request) => {
+        return request;
       });
       this.resInterceptors = axios.interceptors.response.use(
         (res) => res,
@@ -20,16 +19,14 @@ const withErrorHandler = (WrappedContent, axios) => {
         }
       );
     }
-    componentDidUnmount() {
+    componentWillUnmount() {
       axios.interceptors.request.eject(this.reqInterceptors);
       axios.interceptors.response.eject(this.resInterceptors);
     }
-
     errorConfirmedHandler = () => {
       this.setState({ error: null });
     };
     render() {
-      console.log(this.state.error);
       return (
         <Auxiliary>
           <Modal show={this.state.error} noOrder={this.errorConfirmedHandler}>

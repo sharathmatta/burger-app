@@ -1,3 +1,8 @@
 export { addIngredient, removeIngredient, initIngredients } from "./ingredient";
-export {} from "./order";
-export { increasePrice, decreasePrice } from "./price";
+export {
+  purchaseBurgerStart,
+  purchaseBurger,
+  purchaseInit,
+  fetchOrders,
+} from "./order";
+export { increasePrice, decreasePrice, initPrice } from "./price";

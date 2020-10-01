@@ -12,6 +12,7 @@ import * as actionCreators from "../../Store/actions/index";
 
 class BurgerBuilder extends Component {
   state = {
+    ingredients: null,
     purchasing: false,
     loading: false,
     error: false,
@@ -26,6 +27,7 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   purchaseContinueHandler = () => {
+    this.props.onPurchaseInit();
     this.props.history.push("/checkout");
   };
 
@@ -103,7 +105,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.removeIngredient(ingName));
       dispatch(actionCreators.decreasePrice(ingName));
     },
-    onInitIngredients: () => dispatch(actionCreators.initIngredients()),
+    onInitIngredients: () => {
+      dispatch(actionCreators.initIngredients());
+      dispatch(actionCreators.initPrice());
+    },
+    onPurchaseInit: () => dispatch(actionCreators.purchaseInit()),
   };
 };
 

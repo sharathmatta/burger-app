@@ -7,11 +7,13 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import ingredientReducer from "./Store/Reducers/ingredientReducer";
 import priceReducer from "./Store/Reducers/priceReducer";
+import orderReducer from "./Store/Reducers/order";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
   ingState: ingredientReducer,
   priceState: priceReducer,
+  orderState: orderReducer,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
