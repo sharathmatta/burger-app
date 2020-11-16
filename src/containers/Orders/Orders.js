@@ -7,8 +7,9 @@ import { connect } from "react-redux";
 import * as actions from "../../Store/actions/index";
 
 class Orders extends Component {
-  componentWillMount() {
-    this.props.onInitOrder();
+  componentDidMount() {
+    this.props.onInitOrder(this.props.token, this.props.userId);
+    
   }
   render() {
     let allOrders = <p>orders</p>;
@@ -32,14 +33,17 @@ class Orders extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    orders: state.orderState.orders,
-    loading: state.orderState.ordersLoading,
+    orders: state.order.orders,
+    loading: state.order.ordersLoading,
+    token : state.auth.token,
+    userId : state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInitOrder: () => dispatch(actions.fetchOrders()),
+    oncheckAuthState : () => dispatch(actions.checkAuthState()),
+    onInitOrder: (token, userId) => dispatch(actions.fetchOrders(token,userId)),
   };
 };
 

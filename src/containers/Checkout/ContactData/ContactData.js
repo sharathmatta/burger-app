@@ -7,6 +7,7 @@ import Spinner from "../../../components/UI/spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import { connect } from "react-redux";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import { checkValidity } from '../../../Store/utility'
 
 class ContactData extends Component {
   state = {
@@ -32,6 +33,7 @@ class ContactData extends Component {
         },
         value: "",
         validation: {
+          isEmail: true,
           required: true,
         },
         valid: false,
@@ -59,6 +61,7 @@ class ContactData extends Component {
         value: "",
         validation: {
           required: true,
+          isNumeric: true,
           maxLength: 5,
           minLength: 5,
         },
@@ -105,31 +108,11 @@ class ContactData extends Component {
       ingredients: this.props.ings,
       price: this.props.pri,
       Details: formData,
+      userId: this.props.userId,
     };
-    this.props.onOrdered(order);
-    // axios
-    //   .post("/orders.json", order)
-    //   .then((response) => {
-    //     this.setState({ loading: false });
-    //     this.props.history.push("/");
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ loading: false });
-    //   });
+    this.props.onOrdered(order,this.props.token);
   };
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-    return isValid;
-  };
+  
   inputChangedHandler = (event, inputIdentifier) => {
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
@@ -138,7 +121,7 @@ class ContactData extends Component {
     updatedFormElement.touched = true;
     let formIsValid = true;
     if (updatedFormElement.validation) {
-      updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.valid = checkValidity(
         updatedFormElement.value,
         updatedFormElement.validation
       );
@@ -191,15 +174,17 @@ class ContactData extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingState.ingredients,
-    pri: state.priceState.price,
-    purchasing: state.orderState.purchasing,
+    ings: state.ingredients.ingredients,
+    pri: state.price.price,
+    purchasing: state.order.purchasing,
+    token: state.auth.token,
+    userId : state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrdered: (orderData) => dispatch(actionTypes.purchaseBurger(orderData)),
+    onOrdered: (orderData,token) => dispatch(actionTypes.purchaseBurger(orderData,token)),
   };
 };
 

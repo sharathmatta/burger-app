@@ -12,7 +12,7 @@ const toolbar = (props) => (
     </div>
 
     <nav className={classes.DesktopOnly}>
-      <NavigationItems />
+      <NavigationItems clicked={props.click}/>
     </nav>
   </header>
 );

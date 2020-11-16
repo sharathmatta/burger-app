@@ -18,7 +18,7 @@ const sideDrawer = (props) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems clicked={props.click} />
+          <NavigationItems clicked={props.click} side={true}/>
         </nav>
       </div>
     </Auxiliary>

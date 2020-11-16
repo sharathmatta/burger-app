@@ -9,6 +9,7 @@ import Spinner from "../../components/UI/spinner/Spinner";
 import OrderSummary from "../../components/Burger/OrderSummary/Ordersummary";
 import { connect } from "react-redux";
 import * as actionCreators from "../../Store/actions/index";
+import Auth from '../Auth/Auth'
 
 class BurgerBuilder extends Component {
   state = {
@@ -74,11 +75,11 @@ class BurgerBuilder extends Component {
     if (this.state.loading) {
       orderSummary = <Spinner />;
     }
-
+    
     return (
       <Auxiliary>
         <Modal show={this.state.purchasing} noOrder={this.notPurchasingHandler}>
-          {orderSummary}
+          {this.props.token ? orderSummary : <Auth message = 'Please Sign In to continue'/>}
         </Modal>
         {burger}
       </Auxiliary>
@@ -88,9 +89,10 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingState.ingredients,
-    error: state.ingState.error,
-    pri: state.priceState.price,
+    ings: state.ingredients.ingredients,
+    error: state.ingredients.error,
+    pri: state.price.price,
+    token: state.auth.token
   };
 };
 

@@ -33,6 +33,7 @@ const withErrorHandler = (WrappedContent, axios) => {
             {this.state.error ? this.state.error.message : null}
           </Modal>
           <WrappedContent {...this.props} />
+          
         </Auxiliary>
       );
     }

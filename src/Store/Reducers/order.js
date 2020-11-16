@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import { addOrder } from "../actions/utility";
 
 const initialstate = {
   orders: [],
@@ -20,8 +19,17 @@ const reducer = (state = initialstate, action) => {
       return {
         ...state,
         purchasing: false,
-        orders: state.orders.concat(addOrder(action.id, action.orderData)),
+        orders: state.orders.concat({
+          ...action.orderData,
+          id: action.id,
+        }),
         purchased: true,
+      };
+    case actionTypes.PURCHASE_BURGER_FAILED:
+      return {
+        ...state,
+        purchasing: false, 
+        
       };
     case actionTypes.FETCH_INGREDIENTS_FAILED:
       return {

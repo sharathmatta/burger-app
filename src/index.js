@@ -5,17 +5,19 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 import ingredientReducer from "./Store/Reducers/ingredientReducer";
 import priceReducer from "./Store/Reducers/priceReducer";
 import orderReducer from "./Store/Reducers/order";
-import thunk from "redux-thunk";
+import authReducer from "./Store/Reducers/Auth";
 
 const rootReducer = combineReducers({
-  ingState: ingredientReducer,
-  priceState: priceReducer,
-  orderState: orderReducer,
+  ingredients: ingredientReducer,
+  price: priceReducer,
+  order: orderReducer,
+  auth: authReducer,
 });
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const store = createStore(
   rootReducer,

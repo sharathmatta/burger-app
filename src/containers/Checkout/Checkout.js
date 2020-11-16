@@ -14,7 +14,6 @@ class Checkout extends PureComponent {
   };
   render() {
     let summary = <Redirect to="/" />;
-    console.log(this.props.purchased);
     if (this.props.ings) {
       let Purchased = this.props.purchased ? <Redirect to="/" /> : null;
       summary = (
@@ -38,8 +37,8 @@ class Checkout extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingState.ingredients,
-    purchased: state.orderState.purchased,
+    ings: state.ingredients.ingredients,
+    purchased: state.order.purchased,
   };
 };
 
